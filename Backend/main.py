@@ -10,8 +10,9 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://nihalmishra3009.github.io/Mind-Meal/",
-        "https://mind-meal.onrender.com/"
+         "https://nihalmishra3009.github.io",
+        "https://nihalmishra3009.github.io/Mind-Meal",
+        "https://mind-meal.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -25,7 +26,7 @@ RECIPES_FILE = os.path.join(BASE_DIR, "recipes.json")
 PANTRY_FILE = os.path.join(BASE_DIR, "pantry.json")
 
 # GitHub Pages placeholder image
-LOCAL_PLACEHOLDER = "https://sujalpatil21.github.io/Meal-Mind/docs/images/placeholder.png"
+LOCAL_PLACEHOLDER = "https://nihalmishra3009.github.io/Mind-Meal/images/Placeholder.png"
 
 # Create pantry file if missing
 if not os.path.exists(PANTRY_FILE):
