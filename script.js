@@ -43,6 +43,18 @@ const themeToggle = document.getElementById("themeToggle");
 // Backend URL
 const BASE_URL = "https://mind-meal.onrender.com";
 
+// Image placeholders
+const PLACEHOLDER_IMG = "https://nihalmishra3009.github.io/Mind-Meal/images/Placeholder.png";
+const SMALL_ICON = "https://nihalmishra3009.github.io/Mind-Meal/images/small_icon.png";
+const SMALL_ICON_BLACK = "https://nihalmishra3009.github.io/Mind-Meal/images/small_icon_black.png";
+
+// ... inside theme toggle function
+navIcon.src = isDark ? SMALL_ICON_BLACK : SMALL_ICON;
+
+// ... inside modal image logic
+let imageUrl = PLACEHOLDER_IMG;
+
+
 
 /* ======================================================
    1) DARK MODE
