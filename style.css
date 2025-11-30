@@ -1,0 +1,814 @@
+/* --------------------------------------------------
+   GLOBAL
+-------------------------------------------------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    transition: background 0.35s ease, color 0.35s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Dark mode */
+body.dark-mode {
+    background: #000000;
+    color: #f5f5f7;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------
+   NAVBAR - iOS 17 Style
+-------------------------------------------------- */
+.navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background 0.3s ease;
+}
+
+body.dark-mode .navbar {
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.logo {
+    margin: 0;
+    color: #1d1d1f;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+
+    display: flex;
+    align-items: center;   /* fixes vertical alignment */
+    gap: 12px;             /* spacing between icon and text */
+}
+
+.nav-logo-icon {
+    height: 34px;       /* bigger icon */
+    width: auto;
+    display: block;
+    object-fit: contain;
+    transform: translateY(1px); 
+    body.dark-mode .nav-logo-icon {
+    content: url("images/small_icon_black.png");
+}
+ /* perfect vertical alignment tweak */
+}
+
+
+body.dark-mode .logo {
+    color: #f5f5f7;
+}
+
+.tag {
+    display: none;
+}
+
+.icon-btn {
+    background: rgba(120, 120, 128, 0.16);
+    backdrop-filter: blur(10px);
+    border: none;
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(120, 120, 128, 0.24);
+    transform: scale(1.05);
+}
+
+body.dark-mode .icon-btn {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+/* --------------------------------------------------
+   HERO SECTION - iOS 17 Style
+-------------------------------------------------- */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 60px;
+    animation: fadeIn 0.8s ease;
+    gap: 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+body.dark-mode .hero {
+    background: #000000;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero-content h2 {
+    font-size: 48px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+}
+
+.hero-content p {
+    color: #6e6e73;
+    line-height: 1.6;
+    font-size: 17px;
+    margin-bottom: 0;
+}
+
+body.dark-mode .hero-content p {
+    color: #a1a1a6;
+}
+
+.search-row {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+}
+
+.input-box {
+    flex: 1;
+    padding: 16px 18px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    outline: none;
+    transition: 0.2s ease;
+    font-size: 16px;
+    background: #ffffff;
+    font-family: inherit;
+}
+
+.input-box:focus {
+    border-color: #007aff;
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+}
+
+body.dark-mode .input-box {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+body.dark-mode .input-box:focus {
+    border-color: #0a84ff;
+    box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.2);
+}
+
+.action-btn {
+    background: #007aff;
+    border: none;
+    padding: 16px 32px;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.2s ease;
+    font-family: inherit;
+}
+
+.action-btn:hover {
+    background: #0051d5;
+    transform: translateY(-1px);
+}
+
+.action-btn:active {
+    transform: scale(0.98);
+}
+
+body.dark-mode .action-btn {
+    background: #0a84ff;
+}
+
+body.dark-mode .action-btn:hover {
+    background: #006edb;
+}
+
+.hint {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #86868b;
+}
+
+body.dark-mode .hint {
+    color: #86868b;
+}
+
+.hero-media {
+    flex: 0 0 auto;
+}
+
+.hero-media img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+body.dark-mode .hero-media img {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+/* --------------------------------------------------
+   FEATURES - iOS 17 Style
+-------------------------------------------------- */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 60px 40px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: 0.3s ease;
+    animation: fadeIn 0.8s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.feature:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.feature:active {
+    transform: scale(0.98);
+}
+
+body.dark-mode .feature {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .feature:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.feature h3 {
+    margin: 0 0 12px 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.feature p {
+    margin: 0;
+    color: #6e6e73;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+body.dark-mode .feature p {
+    color: #a1a1a6;
+}
+
+/* --------------------------------------------------
+   RECIPES GRID - iOS 17 Style
+-------------------------------------------------- */
+.recipes-section {
+    padding: 60px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.recipe-card {
+    background: #ffffff;
+    padding: 0;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+body.dark-mode .recipe-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .recipe-card:hover {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.recipe-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.recipe-card h3 {
+    margin: 20px 20px 8px 20px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+.recipe-card p {
+    margin: 8px 20px;
+    font-size: 14px;
+    color: #6e6e73;
+    line-height: 1.5;
+}
+
+body.dark-mode .recipe-card p {
+    color: #a1a1a6;
+}
+
+.view-btn {
+    margin: 16px 20px 20px 20px;
+    width: calc(100% - 40px);
+    padding: 12px;
+    background: #007aff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.2s;
+    font-family: inherit;
+}
+
+.view-btn:hover {
+    background: #0051d5;
+}
+
+body.dark-mode .view-btn {
+    background: #0a84ff;
+}
+
+body.dark-mode .view-btn:hover {
+    background: #006edb;
+}
+
+/* --------------------------------------------------
+   MODAL - iOS 17 Style
+-------------------------------------------------- */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.35s ease;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.modal-card {
+    background: #ffffff;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+    border-radius: 24px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    animation: fadeIn 0.35s ease;
+}
+
+body.dark-mode .modal-card {
+    background: #1c1c1e;
+    color: #f5f5f7;
+}
+
+.close-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    background: rgba(120, 120, 128, 0.16);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #1d1d1f;
+    transition: 0.2s;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    background: rgba(120, 120, 128, 0.24);
+    transform: scale(1.1);
+}
+
+body.dark-mode .close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f5f5f7;
+}
+
+body.dark-mode .close-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.modal-card img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 0 auto 24px auto;
+    display: block;
+}
+
+.modal-body {
+    width: 100%;
+    text-align: left;
+    line-height: 1.7;
+    padding-bottom: 20px;
+}
+
+.modal-body h3 {
+    margin: 0 0 12px 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.modal-body p {
+    margin: 0 0 24px 0;
+    color: #6e6e73;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+body.dark-mode .modal-body p {
+    color: #a1a1a6;
+}
+
+.modal-body h4 {
+    margin: 28px 0 12px 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+.modal-body ul,
+.modal-body ol {
+    margin: 0 0 20px 0;
+    padding-left: 24px;
+}
+
+.modal-body li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    font-size: 15px;
+    color: #6e6e73;
+}
+
+body.dark-mode .modal-body li {
+    color: #a1a1a6;
+}
+
+#downloadList {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+}
+
+/* --------------------------------------------------
+   FOOTER - iOS 17 Style
+-------------------------------------------------- */
+.footer {
+    text-align: center;
+    padding: 40px;
+    background: transparent;
+    font-size: 13px;
+    color: #86868b;
+    margin-top: 60px;
+    transition: 0.3s;
+}
+
+body.dark-mode .footer {
+    color: #86868b;
+}
+
+/* --------------------------------------------------
+   RESPONSIVE - iOS Style
+-------------------------------------------------- */
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 24px;
+        gap: 40px;
+    }
+
+    .hero-content h2 {
+        font-size: 36px;
+    }
+.hero-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero-media {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero-media img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+
+    /* 🔥 Animation (desktop) */
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    animation: heroFade 0.8s ease-out forwards;
+}
+
+@keyframes heroFade {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+/* 3D Hover Effect */
+.hero-media {
+    perspective: 1000px;
+}
+
+.hero-media img {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    will-change: transform;
+}
+
+.hero-media img.hover-3d {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+
+
+
+
+    .search-row {
+        flex-direction: column;
+    }
+
+    .features {
+        padding: 40px 24px;
+    }
+
+    .recipes-section {
+        padding: 40px 24px;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+
+    .navbar {
+        padding: 16px 24px;
+    }
+
+    .modal-card {
+        padding: 24px;
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-content h2 {
+        font-size: 28px;
+    }
+
+    .recipes-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ==================================================
+   ⭐ NEW — PANTRY MODAL & CARD (iOS style matching)
+   (Only additive, no changes to existing code)
+================================================== */
+
+/* Pantry Modal uses the same .modal + .modal-card styles already defined */
+
+/* Pantry Card Container */
+.pantry-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+    animation: fadeIn 0.35s ease;
+}
+
+body.dark-mode .pantry-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Pantry Title */
+.pantry-card h4 {
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Pantry List */
+#pantryItems {
+    padding-left: 20px;
+    margin: 0;
+}
+
+#pantryItems li {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    color: #6e6e73;
+}
+
+body.dark-mode #pantryItems li {
+    color: #a1a1a6;
+}
+
+/* Pantry Download Button */
+#downloadPantryBtn {
+    width: 100%;
+    margin-top: 24px;
+}
+/* Floating Up-Down Animation */
+@keyframes floatUpDown {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+}
+
+.hero-media img {
+    animation: floatUpDown 4s ease-in-out infinite;
+}
+/* Healthy Swap Card (uses pantry styling) */
+#healthySwapItems li {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    color: #6e6e73;
+}
+
+body.dark-mode #healthySwapItems li {
+    color: #a1a1a6;
+}
+/* ============================================
+   ⭐ UNIFIED BLUE STYLE FOR ALL FEATURE CARDS
+   (Veg, Non-Veg, Pantry, Healthy Swaps)
+===============================================*/
+
+/* Apply blue left border to all four */
+#filterVeg,
+#filterNonVeg,
+#pantryList,
+#healthySwaps {
+    border-left: 5px solid #0a84ff;
+}
+
+/* Hover effect for all */
+#filterVeg:hover,
+#filterNonVeg:hover,
+#pantryList:hover,
+#healthySwaps:hover {
+    box-shadow: 0 20px 40px rgba(10, 132, 255, 0.25);
+    transform: translateY(-4px);
+}
+
+/* Dark mode */
+body.dark-mode #filterVeg,
+body.dark-mode #filterNonVeg,
+body.dark-mode #pantryList,
+body.dark-mode #healthySwaps {
+    border-left: 5px solid #0a84ff;
+}
+
+body.dark-mode #filterVeg:hover,
+body.dark-mode #filterNonVeg:hover,
+body.dark-mode #pantryList:hover,
+body.dark-mode #healthySwaps:hover {
+    box-shadow: 0 20px 40px rgba(10, 132, 255, 0.45);
+}
+
+/* ============================================
+   ⭐ BLUE ACCENT FOR PANTRY & HEALTHY SWAPS
+   (Matches iOS blue highlight + feature style)
+===============================================*/
+
+/* Pantry List */
+#pantryList {
+    border-left: 5px solid #0a84ff; /* iOS blue */
+}
+
+#pantryList:hover {
+    box-shadow: 0 20px 40px rgba(10, 132, 255, 0.25);
+    transform: translateY(-4px);
+}
+
+/* Healthy Swaps */
+#healthySwaps {
+    border-left: 5px solid #0a84ff; /* iOS blue */
+}
+
+#healthySwaps:hover {
+    box-shadow: 0 20px 40px rgba(10, 132, 255, 0.25);
+    transform: translateY(-4px);
+}
+
+/* Dark Mode variants */
+body.dark-mode #pantryList,
+body.dark-mode #healthySwaps {
+    border-left: 5px solid #0a84ff;  
+}
+
+body.dark-mode #pantryList:hover,
+body.dark-mode #healthySwaps:hover {
+    box-shadow: 0 20px 40px rgba(10, 132, 255, 0.45);
+}

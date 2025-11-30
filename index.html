@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MindMeal – Smart Meal Planner</title>
+    <link rel="icon" type="image/png" href="images/icon.svg">
+
+
+    <!-- Modern Professional Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="nav-left">
+        <h1 class="logo">
+            <img src="images/small_icon.png" class="nav-logo-icon" alt="logo">
+            MindMeal
+        </h1>
+    </div>
+
+    <div class="nav-right">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Dark Mode">🌙</button>
+    </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-content">
+        <h2>Plan Smart. Shop Smart. Eat Better.</h2>
+        <p>
+            Enter the ingredients you have — MindMeal suggests recipes, builds
+            grocery lists, and offers healthier swaps.
+        </p>
+
+        <!-- ⭐ FIXED BLOCK (prevents reload on Enter + ensures type=button) -->
+        <div class="search-row">
+            <input id="ingredientsInput" class="input-box"
+                   placeholder="e.g. rice, chicken, tomato"
+                   aria-label="Enter ingredients"
+                   onkeydown="if (event.key === 'Enter') { event.preventDefault(); document.getElementById('generateBtn').click(); }" />
+
+            <button type="button" class="action-btn" id="generateBtn">
+                Get Suggestions
+            </button>
+        </div>
+
+        <p class="hint">
+            Tip: separate items with commas. Try:
+            <em>rice, eggs, tomato</em>
+        </p>
+    </div>
+
+    <div class="hero-media">
+        <img src="images/Logo.png" alt="Dish photo" loading="lazy" />
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+
+    <div class="feature" id="pantryList">
+        <div class="feature-icon">📋</div>
+        <h3>Pantry List</h3>
+        <p>Instant shopping list for missing ingredients.</p>
+    </div>
+
+    <div class="feature" id="healthySwaps">
+        <div class="feature-icon">🥗</div>
+        <h3>Healthy Swaps</h3>
+        <p>See healthier alternatives where possible.</p>
+    </div>
+
+    <div class="feature" id="filterVeg">
+        <div class="feature-icon">🥦</div>
+        <h3>Veg Only</h3>
+        <p>Show only vegetarian recipes.</p>
+    </div>
+
+    <div class="feature" id="filterNonVeg">
+        <div class="feature-icon">🍗</div>
+        <h3>Non-Veg Only</h3>
+        <p>Show only non-vegetarian recipes.</p>
+    </div>
+
+</section>
+
+<!-- RECIPES GRID -->
+<section class="recipes-section">
+    <h2 class="section-title">Suggested Recipes</h2>
+    <div id="recipesGrid" class="recipes-grid"></div>
+</section>
+
+<!-- RECIPE MODAL -->
+<div id="recipeModal" class="modal hidden">
+    <div class="modal-card">
+        <button class="close-btn" id="closeModal" aria-label="Close Modal">✕</button>
+
+        <img id="modalImg" src="" alt="Recipe Image" />
+
+        <div class="modal-body">
+            <h3 id="modalTitle"></h3>
+            <p id="modalDesc"></p>
+
+            <h4>Ingredients</h4>
+            <ul id="modalIngredients"></ul>
+
+            <h4>Steps</h4>
+            <ol id="modalSteps"></ol>
+
+            <button id="downloadList" class="action-btn">
+                Download Grocery List
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- PANTRY MODAL -->
+<div id="pantryModal" class="modal hidden">
+    <div class="modal-card">
+        <button class="close-btn" id="closePantryModal" aria-label="Close Modal">✕</button>
+
+        <div class="modal-body">
+            <h3>Your Pantry</h3>
+
+            <div id="pantryCard" class="pantry-card">
+                <h4>Saved Ingredients</h4>
+                <ul id="pantryItems"></ul>
+            </div>
+
+            <button id="downloadPantryBtn" class="action-btn">
+                Download Pantry List
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- HEALTHY SWAPS MODAL -->
+<div id="healthyModal" class="modal hidden">
+    <div class="modal-card">
+        <button class="close-btn" id="closeHealthyModal">✕</button>
+
+        <div class="modal-body">
+            <h3>Healthy Swaps</h3>
+
+            <div id="healthySwapCard" class="pantry-card">
+                <h4>Suggested Alternatives</h4>
+                <ul id="healthySwapItems"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>© 2025 MindMeal — AI Powered Meal Planner</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
