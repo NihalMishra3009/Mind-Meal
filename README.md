@@ -15,7 +15,7 @@ It generates realistic food images using an AI image API, maintains a smart pant
 
 ## 🌐 Live Website 
 
-[https://sujalpatil21.github.io/Mind-Meal/](https://sujalpatil21.github.io/Mind-Meal/)
+[https://nihalmishra3009.github.io/Mind-Meal/](https://nihalmishra3009.github.io/Mind-Meal/)
 
 ---
 
