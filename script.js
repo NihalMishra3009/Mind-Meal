@@ -1,5 +1,5 @@
 /* ======================================================
-   MindMeal – Frontend Logic (Updated for AI Images + No-Reload Fix + Loading Overlay)
+   MindMeal – Frontend Logic (Updated with Smart Loading Overlay)
 ====================================================== */
 
 /* -----------------------------
@@ -41,6 +41,7 @@ const themeToggle = document.getElementById("themeToggle");
 
 // ⭐ LOADING OVERLAY
 const loadingOverlay = document.getElementById("loadingOverlay");
+const searchedIngredientSpan = document.getElementById("searchedIngredient");
 
 
 // Backend URL
@@ -57,41 +58,14 @@ function hideLoadingOverlay() {
     }
 }
 
-function showLoadingOverlay() {
+function showLoadingOverlay(searchQuery) {
     if (loadingOverlay) {
+        if (searchedIngredientSpan) {
+            searchedIngredientSpan.textContent = searchQuery;
+        }
         loadingOverlay.classList.remove("hidden");
     }
 }
-
-
-/* ======================================================
-   DATABASE CONNECTION INITIALIZATION
-====================================================== */
-
-async function initializeMindMeal() {
-    try {
-        // Test connection to backend
-        const response = await fetch(`${BASE_URL}/health`, { 
-            method: "GET",
-            timeout: 5000 
-        });
-        
-        if (response.ok) {
-            console.log("✅ Backend connected successfully");
-            hideLoadingOverlay();
-        } else {
-            console.log("⏳ Backend not ready, retrying...");
-            setTimeout(initializeMindMeal, 2000);
-        }
-    } catch (error) {
-        console.log("⏳ Waiting for backend connection...");
-        // Keep overlay visible and retry
-        setTimeout(initializeMindMeal, 2000);
-    }
-}
-
-// Start initialization when page loads
-window.addEventListener("load", initializeMindMeal);
 
 
 /* ======================================================
@@ -200,9 +174,6 @@ function scrollToSuggestions(container) {
 let lastSuggestedRecipes = [];
 
 async function getMeals() {
-    // Hide loading overlay when user interacts with the app
-    hideLoadingOverlay();
-    
     const ingredients = inputIngredients.value.trim();
 
     if (!ingredients) {
@@ -211,13 +182,17 @@ async function getMeals() {
         return;
     }
 
-    recipesGrid.innerHTML = `<div class="loader"></div>`;
+    // Show loading overlay with search query
+    showLoadingOverlay(ingredients);
 
     try {
         const res = await fetch(
             `${BASE_URL}/suggest_meal?ingredients=${encodeURIComponent(ingredients)}`
         );
         const data = await res.json();
+
+        // Hide loading overlay after recipes are fetched
+        hideLoadingOverlay();
 
         lastSuggestedRecipes = data.suggestions;
         await renderRecipes(data.suggestions);
@@ -227,6 +202,8 @@ async function getMeals() {
         saveIngredientsToPantry(ingredients);
 
     } catch (e) {
+        // Hide overlay on error and show error message
+        hideLoadingOverlay();
         recipesGrid.innerHTML =
             `<p style="color:red;">Unable to fetch recipes. Please try again later.</p>`;
         console.error("Error fetching recipes:", e);
