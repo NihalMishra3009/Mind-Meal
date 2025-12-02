@@ -1,5 +1,5 @@
 /* ======================================================
-   MindMeal – Frontend Logic (Updated for AI Images + No-Reload Fix)
+   MindMeal – Frontend Logic (Updated for AI Images + No-Reload Fix + Loading Overlay)
 ====================================================== */
 
 /* -----------------------------
@@ -39,10 +39,59 @@ const filterNonVegBtn = document.getElementById("filterNonVeg");
 // Dark mode toggle
 const themeToggle = document.getElementById("themeToggle");
 
+// ⭐ LOADING OVERLAY
+const loadingOverlay = document.getElementById("loadingOverlay");
+
 
 // Backend URL
 const BASE_URL = "https://mind-meal.onrender.com";
 
+
+/* ======================================================
+   LOADING OVERLAY FUNCTIONS
+====================================================== */
+
+function hideLoadingOverlay() {
+    if (loadingOverlay) {
+        loadingOverlay.classList.add("hidden");
+    }
+}
+
+function showLoadingOverlay() {
+    if (loadingOverlay) {
+        loadingOverlay.classList.remove("hidden");
+    }
+}
+
+
+/* ======================================================
+   DATABASE CONNECTION INITIALIZATION
+====================================================== */
+
+async function initializeMindMeal() {
+    try {
+        // Test connection to backend
+        const response = await fetch(`${BASE_URL}/health`, { 
+            method: "GET",
+            timeout: 5000 
+        });
+        
+        if (response.ok) {
+            console.log("✅ Backend connected successfully");
+            hideLoadingOverlay();
+        } else {
+            console.log("⏳ Backend not ready, retrying...");
+            setTimeout(initializeMindMeal, 2000);
+        }
+    } catch (error) {
+        console.log("⏳ Waiting for backend connection...");
+        // Keep overlay visible and retry
+        setTimeout(initializeMindMeal, 2000);
+    }
+}
+
+// Start initialization when page loads
+window.addEventListener("load", initializeMindMeal);
 
 
 /* ======================================================
@@ -151,6 +200,9 @@ function scrollToSuggestions(container) {
 let lastSuggestedRecipes = [];
 
 async function getMeals() {
+    // Hide loading overlay when user interacts with the app
+    hideLoadingOverlay();
+    
     const ingredients = inputIngredients.value.trim();
 
     if (!ingredients) {
@@ -177,6 +229,7 @@ async function getMeals() {
     } catch (e) {
         recipesGrid.innerHTML =
             `<p style="color:red;">Unable to fetch recipes. Please try again later.</p>`;
+        console.error("Error fetching recipes:", e);
     }
 }
 
@@ -233,7 +286,9 @@ function attachModalHandlers(recipesData) {
                 const imgData = await res.json();
 
                 if (imgData.image) imageUrl = imgData.image;
-            } catch (e) {}
+            } catch (e) {
+                console.error("Error generating image:", e);
+            }
 
             modalImg.src = imageUrl;
             modalTitle.innerText = recipe.name;
@@ -299,11 +354,15 @@ async function saveIngredientsToPantry(input) {
     const items = input.split(",").map(i => i.trim().toLowerCase());
 
     for (const ing of items) {
-        await fetch(`${BASE_URL}/add_to_pantry`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ingredient: ing })
-        });
+        try {
+            await fetch(`${BASE_URL}/add_to_pantry`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ingredient: ing })
+            });
+        } catch (e) {
+            console.error("Error saving to pantry:", e);
+        }
     }
 }
 
@@ -319,12 +378,17 @@ closePantryModalBtn.addEventListener("click", () => {
 });
 
 async function loadPantry() {
-    const res = await fetch(`${BASE_URL}/get_pantry`);
-    const data = await res.json();
+    try {
+        const res = await fetch(`${BASE_URL}/get_pantry`);
+        const data = await res.json();
 
-    pantryItems.innerHTML = data.ingredients.length
-        ? data.ingredients.map(i => `<li>${i}</li>`).join("")
-        : "<li>No ingredients saved yet.</li>";
+        pantryItems.innerHTML = data.ingredients.length
+            ? data.ingredients.map(i => `<li>${i}</li>`).join("")
+            : "<li>No ingredients saved yet.</li>";
+    } catch (e) {
+        pantryItems.innerHTML = "<li>Error loading pantry.</li>";
+        console.error("Error loading pantry:", e);
+    }
 }
 
 downloadPantryBtn.addEventListener("click", () => {
