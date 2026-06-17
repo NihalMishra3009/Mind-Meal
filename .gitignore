@@ -1,0 +1,7 @@
+backend.log
+backend.err.log
+backend/.env
+.env
+.env.local
+node_modules/
+__pycache__/

@@ -45,7 +45,16 @@ const searchedIngredientSpan = document.getElementById("searchedIngredient");
 
 
 // Backend URL
-const BASE_URL = "https://mind-meal.onrender.com";
+const BASE_URL = (() => {
+    const isLocalHost =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1" ||
+        window.location.protocol === "file:";
+
+    return isLocalHost
+        ? "http://127.0.0.1:8000"
+        : "https://mind-meal.onrender.com";
+})();
 
 
 /* ======================================================
@@ -67,6 +76,21 @@ function showLoadingOverlay(searchQuery) {
     }
 }
 
+function renderEmptyState(title, description) {
+    recipesGrid.innerHTML = `
+        <div class="recipe-card" style="grid-column: 1 / -1;">
+            <div class="recipe-card-top">
+                <span class="recipe-card-badge">MindMeal</span>
+                <span class="recipe-card-emoji">✨</span>
+            </div>
+            <div class="recipe-card-body">
+                <h3>${title}</h3>
+                <p>${description}</p>
+            </div>
+        </div>
+    `;
+}
+
 
 /* ======================================================
    1) DARK MODE
@@ -85,8 +109,8 @@ themeToggle.addEventListener("click", () => {
 
     setTimeout(() => {
         navIcon.src = isDark
-            ? "images/small_icon_black.png"
-            : "images/small_icon.png";
+            ? "assets/images/small_icon_black.png"
+            : "assets/images/small_icon.png";
         navIcon.style.opacity = "1";
     }, 200);
 });
@@ -177,8 +201,10 @@ async function getMeals() {
     const ingredients = inputIngredients.value.trim();
 
     if (!ingredients) {
-        recipesGrid.innerHTML =
-            `<p style="color:red;">Please enter at least one ingredient.</p>`;
+        renderEmptyState(
+            "Add at least one ingredient",
+            "Try a few ingredients you already have so MindMeal can build a real recipe match."
+        );
         return;
     }
 
@@ -204,8 +230,10 @@ async function getMeals() {
     } catch (e) {
         // Hide overlay on error and show error message
         hideLoadingOverlay();
-        recipesGrid.innerHTML =
-            `<p style="color:red;">Unable to fetch recipes. Please try again later.</p>`;
+        renderEmptyState(
+            "Could not load recipes",
+            "Please try again in a moment. If the issue continues, the backend may be temporarily unavailable."
+        );
         console.error("Error fetching recipes:", e);
     }
 }
@@ -222,7 +250,10 @@ async function renderRecipes(recipes) {
     recipes = recipes.filter(r => r.matched_ingredients.length > 0);
 
     if (!recipes.length) {
-        recipesGrid.innerHTML = `<p style="color:red;">No recipes found.</p>`;
+        renderEmptyState(
+            "No close matches yet",
+            "Try adding one or two more ingredients, or broaden the search to discover more possible meals."
+        );
         return;
     }
 
@@ -230,11 +261,25 @@ async function renderRecipes(recipes) {
         const card = document.createElement("div");
         card.className = "recipe-card fade-in";
 
+        const typeLabel = recipe.type === "veg" ? "Vegetarian" : recipe.type === "non-veg" ? "Non-Veg" : "Chef pick";
+        const matchedCount = recipe.matched_ingredients.length;
+        const missingCount = recipe.missing_ingredients.length;
+
         card.innerHTML = `
-            <h3>${recipe.name}</h3>
-            <p><b>Matched:</b> ${recipe.matched_ingredients.join(", ")}</p>
-            <p><b>Missing:</b> ${recipe.missing_ingredients.join(", ")}</p>
-            <button class="view-btn" data-name="${recipe.name}">View</button>
+            <div class="recipe-card-top">
+                <span class="recipe-card-badge">${typeLabel}</span>
+                <span class="recipe-card-emoji">🍽️</span>
+            </div>
+            <div class="recipe-card-body">
+                <h3>${recipe.name}</h3>
+                <div class="recipe-meta">
+                    <span class="meta-pill">Matched ${matchedCount}</span>
+                    <span class="meta-pill">Missing ${missingCount}</span>
+                </div>
+                <p><b>Matched:</b> ${recipe.matched_ingredients.join(", ")}</p>
+                <p><b>Missing:</b> ${recipe.missing_ingredients.join(", ")}</p>
+                <button class="view-btn" data-name="${recipe.name}">View recipe</button>
+            </div>
         `;
 
         recipesGrid.appendChild(card);
@@ -253,7 +298,7 @@ function attachModalHandlers(recipesData) {
             const recipe = recipesData.find(r => r.name === btn.dataset.name);
             if (!recipe) return;
 
-            let imageUrl = "images/placeholder.png";
+            let imageUrl = "assets/images/Placeholder.png";
             modalImg.src = "";
 
             try {
