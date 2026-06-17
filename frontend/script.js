@@ -241,18 +241,22 @@ async function getMeals() {
 /* ======================================================
    4) Render Recipes
 ====================================================== */
-async function renderRecipes(recipes) {
+async function renderRecipes(recipes, requireMatch = true) {
 
     window.recipesGridRecipes = recipes;
 
     recipesGrid.innerHTML = "";
 
-    recipes = recipes.filter(r => r.matched_ingredients.length > 0);
+    if (requireMatch) {
+        recipes = recipes.filter(r => r.matched_ingredients.length > 0);
+    }
 
     if (!recipes.length) {
         renderEmptyState(
-            "No close matches yet",
-            "Try adding one or two more ingredients, or broaden the search to discover more possible meals."
+            requireMatch ? "No close matches yet" : "No recipes found",
+            requireMatch
+                ? "Try adding one or two more ingredients, or broaden the search to discover more possible meals."
+                : "There are no recipes in this category yet."
         );
         return;
     }
@@ -265,6 +269,18 @@ async function renderRecipes(recipes) {
         const matchedCount = recipe.matched_ingredients.length;
         const missingCount = recipe.missing_ingredients.length;
 
+        const metaHtml = requireMatch
+            ? `<div class="recipe-meta">
+                    <span class="meta-pill">Matched ${matchedCount}</span>
+                    <span class="meta-pill">Missing ${missingCount}</span>
+               </div>
+               <p><b>Matched:</b> ${recipe.matched_ingredients.join(", ")}</p>
+               <p><b>Missing:</b> ${recipe.missing_ingredients.join(", ")}</p>`
+            : `<div class="recipe-meta">
+                    <span class="meta-pill">${recipe.ingredients.length} ingredients</span>
+               </div>
+               <p><b>Ingredients:</b> ${recipe.ingredients.join(", ")}</p>`;
+
         card.innerHTML = `
             <div class="recipe-card-top">
                 <span class="recipe-card-badge">${typeLabel}</span>
@@ -272,12 +288,7 @@ async function renderRecipes(recipes) {
             </div>
             <div class="recipe-card-body">
                 <h3>${recipe.name}</h3>
-                <div class="recipe-meta">
-                    <span class="meta-pill">Matched ${matchedCount}</span>
-                    <span class="meta-pill">Missing ${missingCount}</span>
-                </div>
-                <p><b>Matched:</b> ${recipe.matched_ingredients.join(", ")}</p>
-                <p><b>Missing:</b> ${recipe.missing_ingredients.join(", ")}</p>
+                ${metaHtml}
                 <button class="view-btn" data-name="${recipe.name}">View recipe</button>
             </div>
         `;
@@ -432,17 +443,20 @@ closeHealthyModalBtn.addEventListener("click", () => {
 });
 
 async function loadHealthySwaps() {
-    if (!window.recipesGridRecipes) {
-        healthySwapItems.innerHTML = "<li>No swaps available.</li>";
-        return;
+    try {
+        const res = await fetch(`${BASE_URL}/healthy_swaps`);
+        const data = await res.json();
+
+        const swaps = data.swaps.map(
+            r => `<li><b>${r.name}:</b> ${r.healthy_alternative}</li>`
+        );
+
+        healthySwapItems.innerHTML =
+            swaps.length ? swaps.join("") : "<li>No healthy swaps found.</li>";
+    } catch (e) {
+        healthySwapItems.innerHTML = "<li>Error loading healthy swaps.</li>";
+        console.error("Error loading healthy swaps:", e);
     }
-
-    let swaps = window.recipesGridRecipes
-        .filter(r => r.healthy_alternative)
-        .map(r => `<li><b>${r.name}:</b> ${r.healthy_alternative}</li>`);
-
-    healthySwapItems.innerHTML =
-        swaps.length ? swaps.join("") : "<li>No healthy swaps found.</li>";
 }
 
 /* ======================================================
@@ -451,20 +465,25 @@ async function loadHealthySwaps() {
 filterVegBtn.addEventListener("click", () => applyTypeFilter("veg"));
 filterNonVegBtn.addEventListener("click", () => applyTypeFilter("non-veg"));
 
-function applyTypeFilter(type) {
-    if (!lastSuggestedRecipes.length) {
-        recipesGrid.innerHTML =
-            "<p style='color:red;'>Click Get Suggestions first.</p>";
-        return;
+async function applyTypeFilter(type) {
+    const label = type === "veg" ? "all vegetarian recipes" : "all non-vegetarian recipes";
+    showLoadingOverlay(label);
+
+    try {
+        const res = await fetch(`${BASE_URL}/recipes?type=${encodeURIComponent(type)}`);
+        const data = await res.json();
+
+        hideLoadingOverlay();
+
+        lastSuggestedRecipes = data.recipes;
+        await renderRecipes(data.recipes, false);
+        scrollToSuggestions(recipesGrid);
+    } catch (e) {
+        hideLoadingOverlay();
+        renderEmptyState(
+            "Could not load recipes",
+            "Please try again in a moment. If the issue continues, the backend may be temporarily unavailable."
+        );
+        console.error("Error fetching recipes by type:", e);
     }
-
-    const filtered = lastSuggestedRecipes.filter(r => r.type === type);
-
-    if (!filtered.length) {
-        recipesGrid.innerHTML =
-            `<p style="color:red;">No ${type} recipes found for your ingredients.</p>`;
-        return;
-    }
-
-    renderRecipes(filtered);
 }

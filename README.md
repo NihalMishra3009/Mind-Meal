@@ -1,32 +1,39 @@
 # MindMeal
 
-MindMeal is a meal-planning web app with a clean split between frontend, backend, and data storage.
+MindMeal is a meal-planning web app with a static frontend, a FastAPI backend, and JSON-backed data files.
 
-## Project Structure
+## Current Structure
 
-- `frontend/` - static UI files
-- `backend/` - FastAPI server
-- `database/` - JSON storage used by the backend
-- `frontend/assets/images/` - app images and icons
+```text
+Mind-Meal/
+  frontend/
+    index.html
+    script.js
+    style.css
+    assets/images/
+  backend/
+    main.py
+    requirements.txt
+    .env.example
+  database/
+    recipes.json
+    pantry.json
+```
 
-## Key Files
+## What Was Cleaned Up
 
-- `frontend/index.html`
-- `frontend/style.css`
-- `frontend/script.js`
-- `backend/main.py`
-- `backend/requirements.txt`
-- `database/recipes.json`
-- `database/pantry.json`
+- Removed the redundant root `index.html` redirect.
+- Ignored local virtual environments and Python bytecode.
+- Ignored local backend logs and environment files.
 
-## Run the Backend
+## Run Locally
 
 ```bash
 pip install -r backend/requirements.txt
 uvicorn backend.main:app --reload
 ```
 
-Or, if you prefer to work from inside the backend folder:
+If you want to run from inside `backend/`:
 
 ```bash
 cd backend
@@ -34,13 +41,8 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-## Open the Frontend
+Open `frontend/index.html` directly for the UI.
 
-Open `index.html` at the repo root, which redirects to `frontend/index.html`.
+## Deployment Note
 
-If you prefer, you can also open `frontend/index.html` directly.
-
-## Notes
-
-- The backend now reads recipe and pantry data from `database/`.
-- Frontend asset paths now point to `frontend/assets/images/`.
+This repo is not yet Cloudflare-ready as-is because the backend still uses local JSON files. For Cloudflare Workers + Neon, the backend needs a database migration first.
