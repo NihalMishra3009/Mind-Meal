@@ -105,19 +105,19 @@
     <div class="feature" id="healthySwaps">
         <div class="feature-icon">🥗</div>
         <h3>Healthy Swaps</h3>
-        <p>See healthier alternatives where possible.</p>
+        <p>Browse all healthy recipe alternatives.</p>
     </div>
 
     <div class="feature" id="filterVeg">
         <div class="feature-icon">🥦</div>
         <h3>Veg Only</h3>
-        <p>Show only vegetarian recipes.</p>
+        <p>Browse all vegetarian recipes.</p>
     </div>
 
     <div class="feature" id="filterNonVeg">
         <div class="feature-icon">🍗</div>
         <h3>Non-Veg Only</h3>
-        <p>Show only non-vegetarian recipes.</p>
+        <p>Browse all non-vegetarian recipes.</p>
     </div>
 
 </section>
@@ -137,21 +137,23 @@
     <div class="modal-card">
         <button class="close-btn" id="closeModal" aria-label="Close Modal">✕</button>
 
-        <img id="modalImg" src="" alt="Recipe Image" />
+        <div class="modal-scroll">
+            <img id="modalImg" src="" alt="Recipe Image" />
 
-        <div class="modal-body">
-            <h3 id="modalTitle"></h3>
-            <p id="modalDesc"></p>
+            <div class="modal-body">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDesc"></p>
 
-            <h4>Ingredients</h4>
-            <ul id="modalIngredients"></ul>
+                <h4>Ingredients</h4>
+                <ul id="modalIngredients"></ul>
 
-            <h4>Steps</h4>
-            <ol id="modalSteps"></ol>
+                <h4>Steps</h4>
+                <ol id="modalSteps"></ol>
 
-            <button id="downloadList" class="action-btn">
-                Download Grocery List
-            </button>
+                <button id="downloadList" class="action-btn">
+                    Download Grocery List
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -161,17 +163,19 @@
     <div class="modal-card">
         <button class="close-btn" id="closePantryModal" aria-label="Close Modal">✕</button>
 
-        <div class="modal-body">
-            <h3>Your Pantry</h3>
+        <div class="modal-scroll">
+            <div class="modal-body">
+                <h3>Your Pantry</h3>
 
-            <div id="pantryCard" class="pantry-card">
-                <h4>Saved Ingredients</h4>
-                <ul id="pantryItems"></ul>
+                <div id="pantryCard" class="pantry-card">
+                    <h4>Saved Ingredients</h4>
+                    <ul id="pantryItems"></ul>
+                </div>
+
+                <button id="downloadPantryBtn" class="action-btn">
+                    Download Pantry List
+                </button>
             </div>
-
-            <button id="downloadPantryBtn" class="action-btn">
-                Download Pantry List
-            </button>
         </div>
     </div>
 </div>
@@ -179,14 +183,16 @@
 <!-- HEALTHY SWAPS MODAL -->
 <div id="healthyModal" class="modal hidden">
     <div class="modal-card">
-        <button class="close-btn" id="closeHealthyModal">✕</button>
+        <button class="close-btn" id="closeHealthyModal" aria-label="Close Modal">✕</button>
 
-        <div class="modal-body">
-            <h3>Healthy Swaps</h3>
+        <div class="modal-scroll">
+            <div class="modal-body">
+                <h3>Healthy Swaps</h3>
 
-            <div id="healthySwapCard" class="pantry-card">
-                <h4>Suggested Alternatives</h4>
-                <ul id="healthySwapItems"></ul>
+                <div id="healthySwapCard" class="pantry-card">
+                    <h4>Suggested Alternatives</h4>
+                    <ul id="healthySwapItems"></ul>
+                </div>
             </div>
         </div>
     </div>
