@@ -3,9 +3,11 @@ backend.err.log
 backend/.env
 .env
 .env.local
-node_modules/
-__pycache__/
 backend/.venv/
+node_modules/
+dist/
+venv/
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
