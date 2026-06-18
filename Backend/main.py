@@ -114,6 +114,30 @@ async def suggest_meal(ingredients: str):
     return {"suggestions": suggestions}
 
 
+@app.get("/recipes")
+async def get_recipes(type: str | None = None):
+    if type:
+        filtered = [recipe for recipe in RECIPES if recipe.get("type", "unknown") == type]
+    else:
+        filtered = RECIPES
+
+    return {"recipes": filtered}
+
+
+@app.get("/healthy_swaps")
+async def healthy_swaps():
+    swaps = [
+        {
+            "name": recipe["name"],
+            "healthy_alternative": recipe.get("healthy_alternative", ""),
+        }
+        for recipe in RECIPES
+        if recipe.get("healthy_alternative")
+    ]
+
+    return {"swaps": swaps}
+
+
 @app.get("/generate_image")
 async def generate_image(recipe_name: str):
     key = recipe_name.lower().strip()
