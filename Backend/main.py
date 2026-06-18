@@ -172,9 +172,11 @@ async def generate_image(recipe_name: str):
         return {"image": fallback_url, "error": None}
 
     prompt = (
-        f"Professional food photography of {recipe['name']}.\n"
-        f"Ingredients: {', '.join(recipe['ingredients'])}.\n"
-        "Realistic, appetizing, gourmet, 4k studio lighting."
+        f"Professional food photography of the exact dish '{recipe['name']}'.\n"
+        f"Use these ingredients prominently and realistically: {', '.join(recipe['ingredients'])}.\n"
+        f"Dish type: {recipe.get('type', 'unknown')}.\n"
+        "The image must match this recipe specifically, not a generic random food plate.\n"
+        "Realistic, appetizing, gourmet plating, centered composition, clean background, soft studio lighting, high detail."
     )
 
     result = await generate_flux_image(prompt)
