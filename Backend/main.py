@@ -158,9 +158,6 @@ async def healthy_swaps():
 async def generate_image(recipe_name: str):
     key = recipe_name.lower().strip()
 
-    if key in IMAGE_CACHE:
-        return {"image": IMAGE_CACHE[key], "error": None}
-
     recipe = next((r for r in RECIPES if r["name"].lower() == key), None)
     if not recipe:
         return {"image": LOCAL_PLACEHOLDER, "error": "Recipe not found"}
@@ -168,7 +165,6 @@ async def generate_image(recipe_name: str):
     # Use loremflickr fallback if FAL_API_KEY is not configured or is placeholder
     if not FAL_API_KEY or FAL_API_KEY == "YOUR_REAL_API_KEY_HERE" or "YOUR_REAL_API_KEY" in FAL_API_KEY:
         fallback_url = f"https://loremflickr.com/600/600/food,{recipe['name'].lower().replace(' ', ',')}"
-        IMAGE_CACHE[key] = fallback_url
         return {"image": fallback_url, "error": None}
 
     prompt = (
@@ -182,14 +178,11 @@ async def generate_image(recipe_name: str):
     result = await generate_flux_image(prompt)
 
     if result["error"] is None:
-        IMAGE_CACHE[key] = result["image"]
+        return result
     else:
         # Fallback to loremflickr if FAL generation failed
         fallback_url = f"https://loremflickr.com/600/600/food,{recipe['name'].lower().replace(' ', ',')}"
-        IMAGE_CACHE[key] = fallback_url
-        result = {"image": fallback_url, "error": None}
-
-    return result
+        return {"image": fallback_url, "error": None}
 
 
 @app.get("/")
