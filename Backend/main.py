@@ -39,6 +39,8 @@ PANTRY_FILE = os.path.join(DATA_DIR, "pantry.json")
 
 LOCAL_PLACEHOLDER = "https://nihalmishra3009.github.io/Mind-Meal/frontend/assets/images/Placeholder.png"
 
+os.makedirs(DATA_DIR, exist_ok=True)
+
 if not os.path.exists(PANTRY_FILE):
     with open(PANTRY_FILE, "w") as f:
         json.dump({"ingredients": []}, f)
