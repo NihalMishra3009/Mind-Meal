@@ -121,7 +121,23 @@ async def get_recipes(type: str | None = None):
     else:
         filtered = RECIPES
 
-    return {"recipes": filtered}
+    recipes = []
+    for recipe in filtered:
+        recipes.append(
+            {
+                "name": recipe["name"],
+                "ingredients": recipe.get("ingredients", []),
+                "matched_ingredients": [],
+                "missing_ingredients": [],
+                "steps": recipe.get("steps", []),
+                "nutrition": recipe.get("nutrition", {}),
+                "healthy_alternative": recipe.get("healthy_alternative", ""),
+                "type": recipe.get("type", "unknown"),
+                "image": LOCAL_PLACEHOLDER,
+            }
+        )
+
+    return {"recipes": recipes}
 
 
 @app.get("/healthy_swaps")
