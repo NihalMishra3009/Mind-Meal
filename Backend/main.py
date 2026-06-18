@@ -45,7 +45,7 @@ if not os.path.exists(PANTRY_FILE):
 with open(RECIPES_FILE, "r") as f:
     RECIPES = json.load(f)
 
-FAL_API_KEY = os.getenv("FAL_API_KEY")
+FAL_API_KEY = os.getenv("FAL_KEY") or os.getenv("FAL_API_KEY")
 IMAGE_CACHE = {}
 
 
