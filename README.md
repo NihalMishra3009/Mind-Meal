@@ -2,6 +2,10 @@
 
 MindMeal is a meal-planning web app with a static frontend, a FastAPI backend, and JSON-backed data files.
 
+<a href="https://mind-meal.pages.dev/" target="_blank" rel="noopener noreferrer">
+  <img src="docs/screenshots/homepage.png" alt="MindMeal homepage screenshot" />
+</a>
+
 ## Project Overview
 
 MindMeal helps users turn a few pantry ingredients into practical meal ideas. The app accepts ingredients, finds matching recipes, shows what is missing, suggests healthy swaps, and can generate recipe images through an external AI image API.
@@ -122,7 +126,7 @@ The backend allows local development origins and Cloudflare Pages preview domain
 
 ## Screenshots
 
-<a href="https://your-live-website-link-here" target="_blank" rel="noopener noreferrer">
+<a href="https://mind-meal.pages.dev/" target="_blank" rel="noopener noreferrer">
   <img src="docs/screenshots/homepage.png" alt="MindMeal homepage screenshot" />
 </a>
 
