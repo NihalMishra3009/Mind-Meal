@@ -25,6 +25,7 @@ app.add_middleware(
         "https://nihalmishra3009.github.io/Mind-Meal",
         "https://mind-meal.onrender.com",
     ],
+    allow_origin_regex=r"https://.*\.pages\.dev$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
