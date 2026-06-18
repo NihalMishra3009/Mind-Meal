@@ -53,7 +53,7 @@ const BASE_URL = (() => {
 
     return isLocalHost
         ? "http://127.0.0.1:8000"
-        : "https://mind-meal.onrender.com";
+        : "https://mind-meal-production.up.railway.app";
 })();
 
 
